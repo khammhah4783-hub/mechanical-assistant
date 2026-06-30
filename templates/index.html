@@ -3,426 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechanical Engineering AI Assistant</title>
+    <title>MechAI · Mechanical Engineering AI</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
         :root {
-            --bg: #0b1120;
-            --card: #1e293b;
-            --card-hover: #2d3b52;
-            --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.3);
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --success: #10b981;
-            --radius: 16px;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            /* Dark Premium Theme */
+            --bg: #0d1117;
+            --card-bg: #161b22;
+            --card-border: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --primary: #58a6ff;
+            --primary-light: #1f6feb;
+            --primary-dark: #0d419d;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+            --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.8);
+            --radius: 12px;
             --nav-width: 280px;
+            --glow: 0 0 20px rgba(88, 166, 255, 0.15);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
-            overflow-x: hidden;
         }
-        .container { max-width: 900px; margin: 0 auto; }
-        
-        /* Header */
-        header {
-            text-align: center;
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border);
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
         }
-        header h1 {
-            font-size: 2.2em;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+        .brand { 
+            font-weight: 700; 
+            font-size: 1.3em; 
+            background: linear-gradient(135deg, var(--primary), #a388ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
         }
-        header p { color: var(--text-muted); margin-top: 5px; font-size: 0.95em; }
-
-        /* Hamburger Menu Button (Fixed Top-Left) */
         .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--text);
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            font-size: 1.5em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
+            background: transparent; border: none;
+            font-size: 1.8em; cursor: pointer;
+            color: var(--text-main);
+            padding: 8px; border-radius: 8px; transition: 0.2s;
         }
-        .menu-toggle:hover { background: var(--card-hover); transform: scale(1.05); }
+        .menu-toggle:hover { background: var(--bg); }
 
-        /* Sidebar Navigation (Slide-in from Left) */
+        /* Sidebar (Dark Slide-in) */
         .sidebar-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-            display: none;
-            backdrop-filter: blur(4px);
+            z-index: 999; display: none;
+            backdrop-filter: blur(6px);
         }
         .sidebar-overlay.active { display: block; }
-        
         .sidebar {
-            position: fixed;
-            top: 0; left: -320px;
-            width: var(--nav-width);
-            height: 100%;
-            background: var(--card);
-            border-right: 1px solid var(--border);
-            z-index: 1001;
-            padding: 30px 20px;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed; top: 0; left: -320px; width: var(--nav-width); height: 100%;
+            background: var(--card-bg); z-index: 1001;
+            padding: 32px 24px; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid var(--card-border); box-shadow: var(--shadow-lg);
             overflow-y: auto;
-            box-shadow: var(--shadow);
         }
         .sidebar.open { left: 0; }
-        .sidebar h2 {
-            color: var(--accent);
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
-            font-size: 1.2em;
+        .close-btn {
+            position: absolute; top: 16px; right: 16px;
+            background: transparent; border: none; font-size: 1.5em; cursor: pointer; color: var(--text-muted);
+        }
+        .close-btn:hover { color: var(--text-main); }
+        .sidebar h2 { 
+            font-size: 0.85em; text-transform: uppercase; 
+            color: var(--text-muted); margin-bottom: 24px; letter-spacing: 1px; 
         }
         
-        /* Sidebar Navigation Buttons (Icon Only) */
         .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: var(--radius);
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 16px;
+            width: 100%; padding: 14px 16px; margin-bottom: 8px;
+            background: transparent; border: 1px solid transparent; border-radius: 12px;
+            font-size: 1em; font-weight: 500; cursor: pointer;
+            color: var(--text-muted); transition: all 0.2s;
         }
-        .nav-btn .icon {
-            font-size: 2em;
-            width: 40px;
-            text-align: center;
+        .nav-btn:hover { 
+            background: var(--bg); 
+            color: var(--text-main); 
+            border-color: var(--card-border);
+            transform: translateX(4px); 
         }
-        .nav-btn:hover {
-            background: var(--card-hover);
-            color: var(--text);
-            transform: translateX(8px);
+        .nav-btn.active { 
+            background: var(--primary-light); 
+            color: var(--text-main); 
+            font-weight: 600;
+            border-color: var(--primary);
+            box-shadow: var(--glow);
         }
-        .nav-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-        .nav-btn .label { font-size: 0.9em; }
+        .nav-btn .icon { font-size: 1.4em; width: 28px; text-align: center; }
 
-        /* Close button inside sidebar */
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5em;
-            cursor: pointer;
+        /* Bento Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
         }
-        .close-btn:hover { color: var(--text); }
+        @media (min-width: 768px) { .grid-container { grid-template-columns: repeat(2, 1fr); } }
 
-        /* Main Content Cards (Only one visible at a time) */
+        /* Cards (Dark Style) */
         .card {
-            background: var(--card);
-            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
             display: none;
-            animation: fadeIn 0.4s ease forwards;
         }
         .card.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        .card:hover { 
+            transform: translateY(-4px); 
+            border-color: var(--primary); 
+            box-shadow: var(--shadow-lg), var(--glow);
         }
-        .card h3 {
-            color: var(--accent);
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-            font-size: 1.2em;
+        .card-header {
+            display: flex; align-items: center; gap: 12px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 16px; margin-bottom: 20px;
         }
+        .card-header .icon { font-size: 1.8em; }
+        .card-header h3 { font-size: 1.1em; font-weight: 600; color: var(--text-main); margin: 0; }
 
         /* Forms */
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; color: var(--text-muted); font-size: 0.85em; margin-bottom: 5px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; color: var(--text-muted); font-size: 0.85em; font-weight: 500; margin-bottom: 6px; }
         .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1em;
-            transition: all 0.3s ease;
+            width: 100%; padding: 10px 14px;
+            background: var(--bg); border: 1px solid var(--card-border);
+            border-radius: 10px; font-size: 0.95em; font-family: inherit;
+            color: var(--text-main); transition: all 0.2s;
         }
         .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
-        /* Action Buttons */
+        /* Modern CTA Button */
         .btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, var(--primary), #a388ff);
+            color: var(--bg);
+            border: none; border-radius: 12px;
+            font-size: 0.95em; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; margin-top: 8px;
         }
-        .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
-        }
-        .btn:active { transform: scale(0.95); }
+        .btn:hover { transform: scale(1.02); box-shadow: var(--glow); }
 
         /* Loading Gear */
-        .loading-overlay {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 0;
-            margin-top: 10px;
-        }
+        .loading-overlay { display: none; justify-content: center; padding: 24px 0; }
         .loading-overlay.active { display: flex; }
-        .gear {
-            width: 60px; height: 60px;
-            border: 8px solid var(--border);
-            border-top: 8px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: relative;
-        }
-        .gear::before, .gear::after {
-            content: ''; position: absolute;
-            background: var(--bg);
-        }
-        .gear::before {
-            width: 24px; height: 24px;
-            top: 18px; left: 18px;
-            border-radius: 50%;
-            background: var(--card);
-            border: 4px solid var(--border);
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .gear { width: 40px; height: 40px; border: 4px solid var(--card-border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Results */
-        .result-box {
-            background: var(--bg);
-            border: 1px solid var(--success);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
+        .result-box { background: var(--bg); border: 1px solid var(--primary); border-radius: 10px; padding: 16px; margin-top: 16px; display: none; }
         .result-box.show { display: block; }
-        .result-box .value { color: var(--success); font-weight: bold; font-size: 1.1em; }
-        .solution-box {
-            background: #1a1a2e;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            display: none;
-        }
+        .result-box .value { color: var(--primary); font-weight: 700; font-size: 1.1em; }
+        .solution-box { background: #1a1a2e; border: 1px solid #f59e0b; border-radius: 10px; padding: 16px; margin-top: 16px; display: none; }
         .solution-box.show { display: block; }
-        .solution-box .title { color: #f59e0b; font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
+        .solution-box .title { color: #f59e0b; font-weight: 700; margin-bottom: 8px; }
 
-        /* Adjust content padding to account for fixed menu button */
+        /* Library Table */
+        .library-search {
+            width: 100%; padding: 12px;
+            border: 1px solid var(--card-border); border-radius: 10px;
+            font-size: 1em; margin-bottom: 20px; background: var(--bg); color: var(--text-main);
+        }
+        .library-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .library-table th { text-align: left; padding: 12px 8px; background: var(--bg); border-bottom: 2px solid var(--card-border); color: var(--text-muted); font-weight: 600; }
+        .library-table td { padding: 12px 8px; border-bottom: 1px solid var(--card-border); }
+        .library-table tr:hover { background: var(--bg); }
+
         @media (max-width: 600px) {
-            body { padding-top: 80px; }
+            .top-bar { padding: 12px 16px; }
             .form-row { grid-template-columns: 1fr; }
-            header h1 { font-size: 1.8em; }
-            .sidebar { width: 260px; left: -280px; }
+            .grid-container { gap: 16px; }
+            .brand { font-size: 1.1em; }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- Hamburger Button (Top-Left Fixed) -->
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-
     <!-- Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="sidebar" id="sidebar">
         <button class="close-btn" onclick="closeSidebar()">✕</button>
-        <h2>⚙️ Menu</h2>
-        
-        <button class="nav-btn active" onclick="switchTab('statics')">
-            <span class="icon">📐</span><span class="label">Statics</span>
-        </button>
-        <button class="nav-btn" onclick="switchTab('dynamics')">
-            <span class="icon">🚀</span><span class="label">Dynamics</span>
-        </button>
-        <button class="nav-btn" onclick="switchTab('thermo')">
-            <span class="icon">🔥</span><span class="label">Thermodynamics</span>
-        </button>
-        <button class="nav-btn" onclick="switchTab('fluids')">
-            <span class="icon">💧</span><span class="label">Fluids</span>
-        </button>
-        <button class="nav-btn" onclick="switchTab('refrigeration')">
-            <span class="icon">❄️</span><span class="label">Refrigeration</span>
-        </button>
-        <button class="nav-btn" onclick="switchTab('control')">
-            <span class="icon">🎛️</span><span class="label">Control</span>
-        </button>
-        <button class="nav-btn" onclick="switchTab('design')">
-            <span class="icon">🔩</span><span class="label">Design</span>
-        </button>
+        <h2>Engineering Menu</h2>
+        <button class="nav-btn active" onclick="switchTab('statics')"><span class="icon">📐</span> Statics</button>
+        <button class="nav-btn" onclick="switchTab('dynamics')"><span class="icon">🚀</span> Dynamics</button>
+        <button class="nav-btn" onclick="switchTab('thermo')"><span class="icon">🔥</span> Thermodynamics</button>
+        <button class="nav-btn" onclick="switchTab('fluids')"><span class="icon">💧</span> Fluid Mechanics</button>
+        <button class="nav-btn" onclick="switchTab('refrigeration')"><span class="icon">❄️</span> Refrigeration</button>
+        <button class="nav-btn" onclick="switchTab('control')"><span class="icon">🎛️</span> Control</button>
+        <button class="nav-btn" onclick="switchTab('design')"><span class="icon">🔩</span> Design</button>
+        <button class="nav-btn" onclick="switchTab('library')"><span class="icon">📚</span> Library</button>
     </div>
 
     <div class="container">
-        <header>
-            <h1>⚙️ Mechanical AI</h1>
-            <p>Engineering Calculator · Expert System · AI Analysis</p>
-        </header>
-
-        <!-- STATICS -->
-        <div id="statics" class="card active">
-            <h3>📐 Statics & Strength</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Force (N)</label><input type="number" id="f_s" value="10000"></div>
-                <div class="form-group"><label>Area (m²)</label><input type="number" id="a_s" value="0.01"></div>
-            </div>
-            <button class="btn" onclick="calc('statics')">Calculate Stress</button>
-            <div class="loading-overlay" id="load_s"><div class="gear"></div></div>
-            <div id="res_s" class="result-box"></div>
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand">⚙️ MechAI</div>
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
         </div>
 
-        <!-- DYNAMICS -->
-        <div id="dynamics" class="card">
-            <h3>🚀 Dynamics & Vibration</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Mass (kg)</label><input type="number" id="m_d" value="10"></div>
-                <div class="form-group"><label>Spring Constant (N/m)</label><input type="number" id="k_d" value="1000"></div>
-            </div>
-            <button class="btn" onclick="calc('dynamics')">Natural Frequency</button>
-            <div class="loading-overlay" id="load_d"><div class="gear"></div></div>
-            <div id="res_d" class="result-box"></div>
-        </div>
-
-        <!-- THERMO -->
-        <div id="thermo" class="card">
-            <h3>🔥 Thermodynamics</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Pressure Ratio</label><input type="number" id="rp_t" value="10"></div>
-                <div class="form-group"><label>Gamma (γ)</label><input type="number" id="gamma_t" value="1.4"></div>
-            </div>
-            <button class="btn" onclick="calc('thermo')">Cycle Efficiency</button>
-            <div class="loading-overlay" id="load_t"><div class="gear"></div></div>
-            <div id="res_t" class="result-box"></div>
-        </div>
-
-        <!-- FLUIDS -->
-        <div id="fluids" class="card">
-            <h3>💧 Fluid Mechanics</h3>
-            <div class="form-row">
-                <div class="form-group"><label>P1 (Pa)</label><input type="number" id="p1_f" value="101325"></div>
-                <div class="form-group"><label>V1 (m/s)</label><input type="number" id="v1_f" value="5"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>V2 (m/s)</label><input type="number" id="v2_f" value="10"></div>
-                <div class="form-group"><label>Density (kg/m³)</label><input type="number" id="rho_f" value="1000"></div>
-            </div>
-            <button class="btn" onclick="calc('fluids')">Calculate P2</button>
-            <div class="loading-overlay" id="load_f"><div class="gear"></div></div>
-            <div id="res_f" class="result-box"></div>
-        </div>
-
-        <!-- REFRIGERATION -->
-        <div id="refrigeration" class="card">
-            <h3>❄️ Refrigeration & Cold Storage</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Room Temp (°C)</label><input type="number" id="room_temp" value="25"></div>
-                <div class="form-group"><label>Target Temp (°C)</label><input type="number" id="target_temp" value="4"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Room Volume (m³)</label><input type="number" id="room_vol" value="50"></div>
-                <div class="form-group"><label>Insulation Type</label>
-                    <select id="insulation">
-                        <option value="good">Polyurethane (Excellent)</option>
-                        <option value="medium">Rock Wool (Average)</option>
-                        <option value="poor">No Insulation (Poor)</option>
-                    </select>
+        <!-- Grid Layout -->
+        <div class="grid-container">
+            <!-- Statics -->
+            <div id="statics" class="card active">
+                <div class="card-header"><span class="icon">📐</span><h3>Statics & Strength</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Force (N)</label><input type="number" id="f_s" value="10000"></div>
+                    <div class="form-group"><label>Area (m²)</label><input type="number" id="a_s" value="0.01"></div>
                 </div>
+                <button class="btn" onclick="calc('statics')">Calculate Stress</button>
+                <div class="loading-overlay" id="load_s"><div class="gear"></div></div>
+                <div id="res_s" class="result-box"></div>
             </div>
-            <button class="btn" onclick="refrigerationAI()">Analyze & Suggest</button>
-            <div class="loading-overlay" id="load_r"><div class="gear"></div></div>
-            <div id="res_r" class="result-box"></div>
-            <div id="sol_r" class="solution-box"></div>
-        </div>
 
-        <!-- CONTROL -->
-        <div id="control" class="card">
-            <h3>🎛️ Automatic Control</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Damping Ratio (ζ)</label><input type="number" id="zeta_c" value="0.5" step="0.1"></div>
-                <div class="form-group"><label>Natural Freq (ωn)</label><input type="number" id="wn_c" value="10"></div>
+            <!-- Dynamics -->
+            <div id="dynamics" class="card">
+                <div class="card-header"><span class="icon">🚀</span><h3>Dynamics & Vibration</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Mass (kg)</label><input type="number" id="m_d" value="10"></div>
+                    <div class="form-group"><label>Spring (N/m)</label><input type="number" id="k_d" value="1000"></div>
+                </div>
+                <button class="btn" onclick="calc('dynamics')">Natural Frequency</button>
+                <div class="loading-overlay" id="load_d"><div class="gear"></div></div>
+                <div id="res_d" class="result-box"></div>
             </div>
-            <button class="btn" onclick="controlAI()">Analyze System</button>
-            <div class="loading-overlay" id="load_c"><div class="gear"></div></div>
-            <div id="res_c" class="result-box"></div>
-            <div id="sol_c" class="solution-box"></div>
-        </div>
 
-        <!-- DESIGN -->
-        <div id="design" class="card">
-            <h3>🔩 Machine Design</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Torque (N.m)</label><input type="number" id="torque_d" value="500"></div>
-                <div class="form-group"><label>Allowable Shear (MPa)</label><input type="number" id="tau_d" value="50"></div>
+            <!-- Thermodynamics -->
+            <div id="thermo" class="card">
+                <div class="card-header"><span class="icon">🔥</span><h3>Thermodynamics</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Pressure Ratio</label><input type="number" id="rp_t" value="10"></div>
+                    <div class="form-group"><label>Gamma (γ)</label><input type="number" id="gamma_t" value="1.4"></div>
+                </div>
+                <button class="btn" onclick="calc('thermo')">Cycle Efficiency</button>
+                <div class="loading-overlay" id="load_t"><div class="gear"></div></div>
+                <div id="res_t" class="result-box"></div>
             </div>
-            <button class="btn" onclick="calc('design')">Shaft Diameter</button>
-            <div class="loading-overlay" id="load_ds"><div class="gear"></div></div>
-            <div id="res_design" class="result-box"></div>
+
+            <!-- Fluid Mechanics -->
+            <div id="fluids" class="card">
+                <div class="card-header"><span class="icon">💧</span><h3>Fluid Mechanics</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>P1 (Pa)</label><input type="number" id="p1_f" value="101325"></div>
+                    <div class="form-group"><label>V1 (m/s)</label><input type="number" id="v1_f" value="5"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>V2 (m/s)</label><input type="number" id="v2_f" value="10"></div>
+                    <div class="form-group"><label>Density (kg/m³)</label><input type="number" id="rho_f" value="1000"></div>
+                </div>
+                <button class="btn" onclick="calc('fluids')">Calculate P2</button>
+                <div class="loading-overlay" id="load_f"><div class="gear"></div></div>
+                <div id="res_f" class="result-box"></div>
+            </div>
+
+            <!-- Refrigeration -->
+            <div id="refrigeration" class="card">
+                <div class="card-header"><span class="icon">❄️</span><h3>Refrigeration</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Room Temp (°C)</label><input type="number" id="room_temp" value="25"></div>
+                    <div class="form-group"><label>Target Temp (°C)</label><input type="number" id="target_temp" value="4"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Volume (m³)</label><input type="number" id="room_vol" value="50"></div>
+                    <div class="form-group"><label>Insulation</label>
+                        <select id="insulation"><option value="good">Excellent</option><option value="medium">Average</option><option value="poor">Poor</option></select>
+                    </div>
+                </div>
+                <button class="btn" onclick="refrigerationAI()">AI Analysis</button>
+                <div class="loading-overlay" id="load_r"><div class="gear"></div></div>
+                <div id="res_r" class="result-box"></div>
+                <div id="sol_r" class="solution-box"></div>
+            </div>
+
+            <!-- Control -->
+            <div id="control" class="card">
+                <div class="card-header"><span class="icon">🎛️</span><h3>Control System</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Damping (ζ)</label><input type="number" id="zeta_c" value="0.5" step="0.1"></div>
+                    <div class="form-group"><label>Natural Freq (ωn)</label><input type="number" id="wn_c" value="10"></div>
+                </div>
+                <button class="btn" onclick="controlAI()">Analyze</button>
+                <div class="loading-overlay" id="load_c"><div class="gear"></div></div>
+                <div id="res_c" class="result-box"></div>
+                <div id="sol_c" class="solution-box"></div>
+            </div>
+
+            <!-- Design -->
+            <div id="design" class="card">
+                <div class="card-header"><span class="icon">🔩</span><h3>Machine Design</h3></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Torque (N.m)</label><input type="number" id="torque_d" value="500"></div>
+                    <div class="form-group"><label>Shear (MPa)</label><input type="number" id="tau_d" value="50"></div>
+                </div>
+                <button class="btn" onclick="calc('design')">Shaft Diameter</button>
+                <div class="loading-overlay" id="load_ds"><div class="gear"></div></div>
+                <div id="res_design" class="result-box"></div>
+            </div>
+
+            <!-- Library -->
+            <div id="library" class="card">
+                <div class="card-header"><span class="icon">📚</span><h3>Scientific Library</h3></div>
+                <input type="text" class="library-search" placeholder="Search materials..." onkeyup="filterLibrary()">
+                <table class="library-table">
+                    <thead>
+                        <tr><th>Material</th><th>E (GPa)</th><th>Density (kg/m³)</th><th>Yield (MPa)</th></tr>
+                    </thead>
+                    <tbody id="lib-body"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        // Sidebar Toggle Functions
+        // Library Data
+        const libData = [
+            {name: "Steel AISI 1020", e: 210, rho: 7850, yield: 350},
+            {name: "Aluminum 6061", e: 69, rho: 2700, yield: 275},
+            {name: "Titanium Grade 5", e: 114, rho: 4430, yield: 880},
+            {name: "Copper C110", e: 117, rho: 8960, yield: 70},
+            {name: "Cast Iron", e: 100, rho: 7150, yield: 150},
+            {name: "Brass", e: 105, rho: 8500, yield: 200},
+            {name: "Stainless 304", e: 193, rho: 8000, yield: 215},
+            {name: "Tungsten", e: 411, rho: 19300, yield: 750}
+        ];
+
+        function renderLibrary(filter = '') {
+            const tbody = document.getElementById('lib-body');
+            tbody.innerHTML = '';
+            libData.filter(m => m.name.toLowerCase().includes(filter.toLowerCase()))
+                .forEach(m => {
+                    tbody.innerHTML += `<tr><td><strong>${m.name}</strong></td><td>${m.e}</td><td>${m.rho}</td><td>${m.yield}</td></tr>`;
+                });
+        }
+        function filterLibrary() {
+            renderLibrary(document.querySelector('.library-search').value);
+        }
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').classList.toggle('active');
@@ -431,27 +371,23 @@
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebarOverlay').classList.remove('active');
         }
-
-        // Tab Switching with Sidebar Close
         function switchTab(id) {
             document.querySelectorAll('.card').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-            closeSidebar(); // Auto-close menu on selection
+            closeSidebar();
+            if (id === 'library') renderLibrary();
         }
 
-        // Simulate Loading Gear + Calculation
         function runCalc(loaderId, resultId, calculationFunction) {
             document.getElementById(loaderId).classList.add('active');
             document.getElementById(resultId).classList.remove('show');
             setTimeout(() => {
                 document.getElementById(loaderId).classList.remove('active');
                 calculationFunction();
-            }, 1500);
+            }, 1000);
         }
-
-        // Basic Calculators
         function calc(type) {
             const loadMap = {'statics':'load_s','dynamics':'load_d','thermo':'load_t','fluids':'load_f','design':'load_ds'};
             const resMap = {'statics':'res_s','dynamics':'res_d','thermo':'res_t','fluids':'res_f','design':'res_design'};
@@ -461,37 +397,35 @@
                     const F = parseFloat(document.getElementById('f_s').value);
                     const A = parseFloat(document.getElementById('a_s').value);
                     const sigma = F / A;
-                    res = `Normal Stress: <span class="value">${(sigma/1e6).toFixed(2)} MPa</span>`;
+                    res = `Stress: <span class="value">${(sigma/1e6).toFixed(2)} MPa</span>`;
                 } else if (type === 'dynamics') {
                     const m = parseFloat(document.getElementById('m_d').value);
                     const k = parseFloat(document.getElementById('k_d').value);
                     const w = Math.sqrt(k/m);
-                    res = `Natural Frequency: <span class="value">${(w/(2*Math.PI)).toFixed(2)} Hz</span>`;
+                    res = `Natural Freq: <span class="value">${(w/(2*Math.PI)).toFixed(2)} Hz</span>`;
                 } else if (type === 'thermo') {
                     const rp = parseFloat(document.getElementById('rp_t').value);
                     const g = parseFloat(document.getElementById('gamma_t').value);
                     const eff = 1 - Math.pow(rp, (1-g)/g);
-                    res = `Cycle Efficiency: <span class="value">${(eff*100).toFixed(2)}%</span>`;
+                    res = `Efficiency: <span class="value">${(eff*100).toFixed(2)}%</span>`;
                 } else if (type === 'fluids') {
                     const p1 = parseFloat(document.getElementById('p1_f').value);
                     const v1 = parseFloat(document.getElementById('v1_f').value);
                     const v2 = parseFloat(document.getElementById('v2_f').value);
                     const rho = parseFloat(document.getElementById('rho_f').value);
                     const p2 = p1 + 0.5 * rho * (v1*v1 - v2*v2);
-                    res = `Pressure P2: <span class="value">${p2.toFixed(2)} Pa</span>`;
+                    res = `P2: <span class="value">${p2.toFixed(2)} Pa</span>`;
                 } else if (type === 'design') {
                     const T = parseFloat(document.getElementById('torque_d').value);
                     const tau = parseFloat(document.getElementById('tau_d').value) * 1e6;
                     const d = Math.pow((16*T)/(Math.PI*tau), 1/3);
-                    res = `Shaft Diameter: <span class="value">${(d*1000).toFixed(2)} mm</span>`;
+                    res = `Shaft Dia: <span class="value">${(d*1000).toFixed(2)} mm</span>`;
                 }
-                const el = document.getElementById(resMap[type]);
-                el.innerHTML = `<p>${res}</p>`;
-                el.classList.add('show');
+                document.getElementById(resMap[type]).innerHTML = `<p>${res}</p>`;
+                document.getElementById(resMap[type]).classList.add('show');
             });
         }
 
-        // Refrigeration AI
         function refrigerationAI() {
             runCalc('load_r', 'res_r', function() {
                 const Troom = parseFloat(document.getElementById('room_temp').value);
@@ -501,7 +435,7 @@
                 const deltaT = Troom - Ttarget;
                 let eff, load, comp;
                 if(deltaT <= 0) {
-                    document.getElementById('res_r').innerHTML = `<p>Target temp is higher than room. No cooling needed.</p>`;
+                    document.getElementById('res_r').innerHTML = `<p>No cooling needed.</p>`;
                     document.getElementById('res_r').classList.add('show');
                     document.getElementById('sol_r').classList.remove('show');
                     return;
@@ -512,64 +446,45 @@
                 load = (Vol * deltaT * 0.3) / eff;
                 if(load < 5) comp = "5 HP Scroll Compressor";
                 else if(load < 20) comp = "10 HP Reciprocating Compressor";
-                else comp = "Air-Cooled Chiller (20 HP+)";
-
+                else comp = "Air-Cooled Chiller";
                 document.getElementById('res_r').innerHTML = `
                     <p><span class="value">Cooling Load: ${load.toFixed(1)} kW</span></p>
                     <p>ΔT: ${deltaT}°C | Volume: ${Vol} m³</p>
                 `;
                 document.getElementById('res_r').classList.add('show');
                 document.getElementById('sol_r').innerHTML = `
-                    <div class="title">📘 Suggested Solution</div>
-                    <p>1. Estimated cooling load is approx. ${load.toFixed(1)} kW.</p>
-                    <p>2. Suggestion: Use a <b>${comp}</b> system.</p>
-                    <p>3. Air distribution should use a fan-coil evaporator with ${load.toFixed(1)} kW capacity.</p>
+                    <div class="title">📘 Expert Suggestion</div>
+                    <p>1. Estimated cooling load: ${load.toFixed(1)} kW.</p>
+                    <p>2. Recommended system: <b>${comp}</b>.</p>
                 `;
                 document.getElementById('sol_r').classList.add('show');
             });
         }
-
-        // Control AI
         function controlAI() {
             runCalc('load_c', 'res_c', function() {
                 const z = parseFloat(document.getElementById('zeta_c').value);
                 const w = parseFloat(document.getElementById('wn_c').value);
                 const wd = w * Math.sqrt(1 - z*z);
-                let status, tp, ts, os, formula;
-                if(z < 1) {
-                    status = "Underdamped";
-                    os = Math.exp(- (Math.PI * z) / Math.sqrt(1 - z*z));
-                    tp = Math.PI / wd;
-                    ts = 4 / (z * w);
-                    formula = "tp = π / ωd";
-                } else if(z === 1) {
-                    status = "Critically Damped";
-                    tp = "No overshoot";
-                    ts = 5 / (z * w);
-                    os = 0;
-                    formula = "No overshoot";
-                } else {
-                    status = "Overdamped";
-                    tp = "Infinite";
-                    ts = 5 / (z * w);
-                    os = 0;
-                    formula = "Slow system";
-                }
+                let status, ts;
+                if(z < 1) { status = "Underdamped"; ts = 4/(z*w); }
+                else if(z === 1) { status = "Critically Damped"; ts = 5/(z*w); }
+                else { status = "Overdamped"; ts = 5/(z*w); }
                 document.getElementById('res_c').innerHTML = `
-                    <p><span class="value">System Status: ${status}</span></p>
-                    <p>ωn: ${w} rad/s | ζ: ${z} | Damped Freq: ${wd.toFixed(2)} rad/s</p>
+                    <p><span class="value">System: ${status}</span></p>
+                    <p>Settling Time: ${ts.toFixed(2)} s</p>
                 `;
                 document.getElementById('res_c').classList.add('show');
                 document.getElementById('sol_c').innerHTML = `
                     <div class="title">📘 Control Analysis</div>
-                    <p>1. Characteristic Equation: s² + 2ζωn s + ωn² = 0</p>
-                    <p>2. System is stable (ζ and ωn are positive).</p>
-                    <p>3. Settling Time: Ts ≈ ${ts.toFixed(2)} seconds.</p>
-                    <p>4. Formula: ${formula}</p>
+                    <p>Characteristic Eq: s² + 2ζωn s + ωn² = 0</p>
+                    <p>System is stable (ζ & ωn are positive).</p>
                 `;
                 document.getElementById('sol_c').classList.add('show');
             });
         }
+
+        // Initialize
+        renderLibrary();
     </script>
 </body>
 </html>
