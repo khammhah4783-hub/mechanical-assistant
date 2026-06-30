@@ -6,78 +6,277 @@
     <title>دستیار هوشمند مهندسی مکانیک</title>
     <style>
         :root {
-            --bg: #0f172a; --card: #1e293b; --accent: #3b82f6;
-            --text: #e2e8f0; --border: #334155; --success: #10b981;
-            --radius: 12px;
+            --bg: #0b1120;
+            --card: #1e293b;
+            --card-hover: #2d3b52;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.3);
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg); color: var(--text);
-            min-height: 100vh; padding: 20px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
         }
-        .container { max-width: 800px; margin: 0 auto; }
-        header { text-align: center; padding: 20px 0; border-bottom: 2px solid var(--accent); margin-bottom: 20px; }
-        header h1 { color: var(--accent); }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Header */
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+        }
+        header h1 {
+            font-size: 2.2em;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        header p { color: var(--text-muted); margin-top: 5px; font-size: 0.95em; }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            font-size: 1.5em;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle:hover { background: var(--card-hover); }
+
+        /* Navigation Grid */
         .nav-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 5px; margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
         }
+        .nav-grid.hidden { display: none; }
+        
         .nav-btn {
-            background: var(--card); border: 1px solid var(--border); color: var(--text);
-            padding: 8px; border-radius: var(--radius); cursor: pointer; text-align: center; font-size: 0.8em;
-            transition: 0.2s;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 14px 8px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
         }
-        .nav-btn.active { background: var(--accent); border-color: var(--accent); }
+        .nav-btn .icon { font-size: 1.8em; line-height: 1; }
+        .nav-btn .label { font-size: 0.8em; }
+        
+        .nav-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            background: var(--card-hover);
+            border-color: var(--accent);
+            color: var(--text);
+            box-shadow: var(--shadow);
+        }
+        .nav-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 0 25px var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        /* Cards */
         .card {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 20px; margin-bottom: 20px; display: none;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
         }
         .card.active { display: block; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; color: #94a3b8; font-size: 0.85em; margin-bottom: 3px; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Forms */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; color: var(--text-muted); font-size: 0.85em; margin-bottom: 5px; }
         .form-group input, .form-group select {
-            width: 100%; padding: 8px; background: var(--bg);
-            border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+            width: 100%;
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1em;
+            transition: all 0.3s ease;
         }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* Buttons */
         .btn {
-            width: 100%; background: var(--accent); color: white; border: none;
-            padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 10px;
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
         }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+        }
+        .btn:active { transform: scale(0.95); }
+
+        /* Loading Gear (چرخ‌دنده لودینگ) */
+        .loading-overlay {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
+            margin-top: 10px;
+        }
+        .loading-overlay.active { display: flex; }
+        
+        .gear {
+            width: 60px;
+            height: 60px;
+            border: 8px solid var(--border);
+            border-top: 8px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+        .gear::before, .gear::after {
+            content: '';
+            position: absolute;
+            background: var(--bg);
+        }
+        /* ایجاد ظاهر دندانه‌های چرخ‌دنده با CSS */
+        .gear::before {
+            width: 24px; height: 24px;
+            top: 18px; left: 18px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 4px solid var(--border);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results */
         .result-box {
-            background: #1e293b; border: 1px solid var(--success);
-            border-radius: 6px; padding: 15px; margin-top: 10px; display: none;
-            white-space: pre-wrap; text-align: left; direction: ltr;
+            background: var(--bg);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.3s ease;
         }
         .result-box.show { display: block; }
-        .result-box .value { color: var(--success); font-weight: bold; }
+        .result-box .value { color: var(--success); font-weight: bold; font-size: 1.1em; }
         .solution-box {
-            background: #334155; border: 1px solid #f59e0b;
-            border-radius: 6px; padding: 15px; margin-top: 10px; display: none;
+            background: #1a1a2e;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
         }
         .solution-box.show { display: block; }
-        .solution-box .title { color: #f59e0b; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
-        th, td { padding: 8px; border-bottom: 1px solid var(--border); text-align: right; }
-        th { background: var(--accent); color: white; }
+        .solution-box .title { color: #f59e0b; font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
+
+        /* Responsive: Mobile */
+        @media (max-width: 600px) {
+            .menu-toggle { display: block; }
+            .nav-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .form-row { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8em; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>⚙️ دستیار هوشمند مهندسی</h1>
-            <p style="color:#94a3b8;">AI Control, Refrigeration, Statics, Dynamics & more</p>
+            <p>دکمه‌های تِم‌دار · محاسبات هوشمند · لودینگ حرفه‌ای</p>
         </header>
 
-        <div class="nav-grid">
-            <button class="nav-btn active" onclick="switchTab('statics')">استاتیک</button>
-            <button class="nav-btn" onclick="switchTab('dynamics')">دینامیک</button>
-            <button class="nav-btn" onclick="switchTab('thermo')">ترمودینامیک</button>
-            <button class="nav-btn" onclick="switchTab('fluids')">سیالات</button>
-            <button class="nav-btn" onclick="switchTab('refrigeration')">❄️ تبرید</button>
-            <button class="nav-btn" onclick="switchTab('control')">🎛️ کنترل</button>
-            <button class="nav-btn" onclick="switchTab('design')">طراحی</button>
+        <!-- Hamburger Button (Visible on Mobile) -->
+        <button class="menu-toggle" onclick="toggleMenu()">☰ منو</button>
+
+        <!-- Navigation Menu with Themed Icons -->
+        <div class="nav-grid" id="navGrid">
+            <button class="nav-btn active" onclick="switchTab('statics')">
+                <span class="icon">📐</span><span class="label">استاتیک</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('dynamics')">
+                <span class="icon">🚀</span><span class="label">دینامیک</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('thermo')">
+                <span class="icon">🔥</span><span class="label">ترمودینامیک</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('fluids')">
+                <span class="icon">💧</span><span class="label">سیالات</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('refrigeration')">
+                <span class="icon">❄️</span><span class="label">تبرید</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('control')">
+                <span class="icon">🎛️</span><span class="label">کنترل</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('design')">
+                <span class="icon">🔩</span><span class="label">طراحی</span>
+            </button>
         </div>
 
         <!-- STATICS -->
@@ -88,6 +287,7 @@
                 <div class="form-group"><label>سطح مقطع (m²)</label><input type="number" id="a_s" value="0.01"></div>
             </div>
             <button class="btn" onclick="calc('statics')">محاسبه تنش</button>
+            <div class="loading-overlay" id="load_s"><div class="gear"></div></div>
             <div id="res_s" class="result-box"></div>
         </div>
 
@@ -99,6 +299,7 @@
                 <div class="form-group"><label>ثابت فنر (N/m)</label><input type="number" id="k_d" value="1000"></div>
             </div>
             <button class="btn" onclick="calc('dynamics')">فرکانس طبیعی</button>
+            <div class="loading-overlay" id="load_d"><div class="gear"></div></div>
             <div id="res_d" class="result-box"></div>
         </div>
 
@@ -110,6 +311,7 @@
                 <div class="form-group"><label>گاما (γ)</label><input type="number" id="gamma_t" value="1.4"></div>
             </div>
             <button class="btn" onclick="calc('thermo')">بازده چرخه</button>
+            <div class="loading-overlay" id="load_t"><div class="gear"></div></div>
             <div id="res_t" class="result-box"></div>
         </div>
 
@@ -125,19 +327,20 @@
                 <div class="form-group"><label>چگالی (kg/m³)</label><input type="number" id="rho_f" value="1000"></div>
             </div>
             <button class="btn" onclick="calc('fluids')">فشار P2</button>
+            <div class="loading-overlay" id="load_f"><div class="gear"></div></div>
             <div id="res_f" class="result-box"></div>
         </div>
 
-        <!-- REFRIGERATION (AI Expert) -->
+        <!-- REFRIGERATION -->
         <div id="refrigeration" class="card">
-            <h3>❄️ سیستم تبرید و سردخانه (هوشمند)</h3>
+            <h3>❄️ تبرید و سردخانه (هوشمند)</h3>
             <div class="form-row">
                 <div class="form-group"><label>دمای اتاق (C°)</label><input type="number" id="room_temp" value="25"></div>
                 <div class="form-group"><label>دمای هدف (C°)</label><input type="number" id="target_temp" value="4"></div>
             </div>
             <div class="form-row">
                 <div class="form-group"><label>حجم اتاق (m³)</label><input type="number" id="room_vol" value="50"></div>
-                <div class="form-group"><label>جنس دیوار (عایق)</label>
+                <div class="form-group"><label>جنس عایق</label>
                     <select id="insulation">
                         <option value="good">پلی‌یورتان (عالی)</option>
                         <option value="medium">پشم سنگ (متوسط)</option>
@@ -145,19 +348,21 @@
                     </select>
                 </div>
             </div>
-            <button class="btn" onclick="refrigerationAI()">تحلیل و پیشنهاد سیستم</button>
+            <button class="btn" onclick="refrigerationAI()">تحلیل و پیشنهاد</button>
+            <div class="loading-overlay" id="load_r"><div class="gear"></div></div>
             <div id="res_r" class="result-box"></div>
             <div id="sol_r" class="solution-box"></div>
         </div>
 
-        <!-- CONTROL (AI Calculation + Explanation) -->
+        <!-- CONTROL -->
         <div id="control" class="card">
-            <h3>🎛️ کنترل اتوماتیک (تحلیل پاسخ پله)</h3>
+            <h3>🎛️ کنترل اتوماتیک</h3>
             <div class="form-row">
                 <div class="form-group"><label>نرخ میرایی (ζ)</label><input type="number" id="zeta_c" value="0.5" step="0.1"></div>
-                <div class="form-group"><label>فرکانس طبیعی (ωn rad/s)</label><input type="number" id="wn_c" value="10"></div>
+                <div class="form-group"><label>فرکانس طبیعی (ωn)</label><input type="number" id="wn_c" value="10"></div>
             </div>
             <button class="btn" onclick="controlAI()">تحلیل سیستم</button>
+            <div class="loading-overlay" id="load_c"><div class="gear"></div></div>
             <div id="res_c" class="result-box"></div>
             <div id="sol_c" class="solution-box"></div>
         </div>
@@ -170,147 +375,162 @@
                 <div class="form-group"><label>تنش مجاز (MPa)</label><input type="number" id="tau_d" value="50"></div>
             </div>
             <button class="btn" onclick="calc('design')">قطر شفت</button>
+            <div class="loading-overlay" id="load_ds"><div class="gear"></div></div>
             <div id="res_design" class="result-box"></div>
         </div>
     </div>
 
     <script>
+        // Toggle Hamburger Menu
+        function toggleMenu() {
+            const nav = document.getElementById('navGrid');
+            nav.classList.toggle('hidden');
+        }
+
         // Tab Switching
         function switchTab(id) {
             document.querySelectorAll('.card').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
+            const nav = document.getElementById('navGrid');
+            if(window.innerWidth <= 600) nav.classList.add('hidden');
         }
 
-        // Basic Calculators (Math)
-        function calc(type) {
-            let res;
-            if (type === 'statics') {
-                const F = parseFloat(document.getElementById('f_s').value);
-                const A = parseFloat(document.getElementById('a_s').value);
-                const sigma = F / A;
-                res = `تنش نرمال: ${(sigma/1e6).toFixed(2)} MPa`;
-            } else if (type === 'dynamics') {
-                const m = parseFloat(document.getElementById('m_d').value);
-                const k = parseFloat(document.getElementById('k_d').value);
-                const w = Math.sqrt(k/m);
-                res = `فرکانس طبیعی: ${(w/(2*Math.PI)).toFixed(2)} Hz`;
-            } else if (type === 'thermo') {
-                const rp = parseFloat(document.getElementById('rp_t').value);
-                const g = parseFloat(document.getElementById('gamma_t').value);
-                const eff = 1 - Math.pow(rp, (1-g)/g);
-                res = `بازده چرخه: ${(eff*100).toFixed(2)}%`;
-            } else if (type === 'fluids') {
-                const p1 = parseFloat(document.getElementById('p1_f').value);
-                const v1 = parseFloat(document.getElementById('v1_f').value);
-                const v2 = parseFloat(document.getElementById('v2_f').value);
-                const rho = parseFloat(document.getElementById('rho_f').value);
-                const p2 = p1 + 0.5 * rho * (v1*v1 - v2*v2);
-                res = `فشار P2: ${p2.toFixed(2)} Pa`;
-            } else if (type === 'design') {
-                const T = parseFloat(document.getElementById('torque_d').value);
-                const tau = parseFloat(document.getElementById('tau_d').value) * 1e6;
-                const d = Math.pow((16*T)/(Math.PI*tau), 1/3);
-                res = `قطر شفت: ${(d*1000).toFixed(2)} mm`;
-            }
-            const el = document.getElementById('res_' + (type==='design'?'design':type[0]));
-            el.innerHTML = `<p><span class="value">${res}</span></p>`;
-            el.classList.add('show');
-        }
-
-        // ================================================================
-        // AI EXPERT: REFRIGERATION
-        // ================================================================
-        function refrigerationAI() {
-            const Troom = parseFloat(document.getElementById('room_temp').value);
-            const Ttarget = parseFloat(document.getElementById('target_temp').value);
-            const Vol = parseFloat(document.getElementById('room_vol').value);
-            const Ins = document.getElementById('insulation').value;
-
-            const deltaT = Troom - Ttarget;
-            let eff, load, suggestion, comp;
-
-            if(deltaT <= 0) {
-                suggestion = "دمای هدف بالاتر از دمای اتاق است. نیازی به سیستم تبرید ندارید.";
-                document.getElementById('res_r').innerHTML = `<p>${suggestion}</p>`;
-                document.getElementById('res_r').classList.add('show');
-                document.getElementById('sol_r').classList.remove('show');
-                return;
-            }
-
-            // Load Calculation (Approx)
-            if(Ins === 'good') eff = 0.9;
-            else if(Ins === 'medium') eff = 0.7;
-            else eff = 0.5;
+        // Simulate Loading Gear (چرخ‌دنده) + Calculation
+        function runCalc(loaderId, resultId, calculationFunction) {
+            // Show loader
+            document.getElementById(loaderId).classList.add('active');
+            document.getElementById(resultId).classList.remove('show');
             
-            load = (Vol * deltaT * 0.3) / eff; // Approx Heat Load in kW
-
-            if(load < 5) comp = "کمپرسور اسکرال ۵ اسب (سرمایش مستقیم)";
-            else if(load < 20) comp = "کمپرسور پیستونی ۱۰ اسب (سیستم DX)";
-            else comp = "چیلر تراکمی با کندانسور هوایی (۲۰ اسب به بالا)";
-
-            document.getElementById('res_r').innerHTML = `
-                <p><span class="value">🔹 بار برودتی تخمینی: ${load.toFixed(1)} kW</span></p>
-                <p>ΔT مورد نیاز: ${deltaT}°C | حجم: ${Vol} m³</p>
-            `;
-            document.getElementById('res_r').classList.add('show');
-
-            document.getElementById('sol_r').innerHTML = `
-                <div class="title">📘 راه‌حل پیشنهادی سیستم (تشریحی)</div>
-                <p>۱. با توجه به اختلاف دمای ${deltaT} درجه و حجم ${Vol} متر مکعب، بار سرمایشی حدوداً ${load.toFixed(1)} کیلووات برآورد می‌شود.</p>
-                <p>۲. برای تأمین این بار برودتی، پیشنهاد می‌شود از یک <b>${comp}</b> استفاده شود.</p>
-                <p>۳. جهت توزیع هوا در سردخانه، استفاده از اواپراتور فن‌دار (Evaporator Unit) با ظرفیت حداقل ${load.toFixed(1)} کیلووات الزامی است.</p>
-                <p>۴. خط لوله مبرد باید با عایق الاستومری (Armaflex) جهت جلوگیری از تعریق پوشیده شود.</p>
-            `;
-            document.getElementById('sol_r').classList.add('show');
+            // Simulate 1.5 seconds of work
+            setTimeout(() => {
+                document.getElementById(loaderId).classList.remove('active');
+                // Run the actual calculation
+                calculationFunction();
+            }, 1500);
         }
 
-        // ================================================================
-        // AI EXPERT: CONTROL THEORY
-        // ================================================================
+        // Basic Calculators (Wrapped with Loader)
+        function calc(type) {
+            const loadMap = {'statics':'load_s','dynamics':'load_d','thermo':'load_t','fluids':'load_f','design':'load_ds'};
+            const resMap = {'statics':'res_s','dynamics':'res_d','thermo':'res_t','fluids':'res_f','design':'res_design'};
+            
+            runCalc(loadMap[type], resMap[type], function() {
+                let res;
+                if (type === 'statics') {
+                    const F = parseFloat(document.getElementById('f_s').value);
+                    const A = parseFloat(document.getElementById('a_s').value);
+                    const sigma = F / A;
+                    res = `تنش نرمال: <span class="value">${(sigma/1e6).toFixed(2)} MPa</span>`;
+                } else if (type === 'dynamics') {
+                    const m = parseFloat(document.getElementById('m_d').value);
+                    const k = parseFloat(document.getElementById('k_d').value);
+                    const w = Math.sqrt(k/m);
+                    res = `فرکانس طبیعی: <span class="value">${(w/(2*Math.PI)).toFixed(2)} Hz</span>`;
+                } else if (type === 'thermo') {
+                    const rp = parseFloat(document.getElementById('rp_t').value);
+                    const g = parseFloat(document.getElementById('gamma_t').value);
+                    const eff = 1 - Math.pow(rp, (1-g)/g);
+                    res = `بازده چرخه: <span class="value">${(eff*100).toFixed(2)}%</span>`;
+                } else if (type === 'fluids') {
+                    const p1 = parseFloat(document.getElementById('p1_f').value);
+                    const v1 = parseFloat(document.getElementById('v1_f').value);
+                    const v2 = parseFloat(document.getElementById('v2_f').value);
+                    const rho = parseFloat(document.getElementById('rho_f').value);
+                    const p2 = p1 + 0.5 * rho * (v1*v1 - v2*v2);
+                    res = `فشار P2: <span class="value">${p2.toFixed(2)} Pa</span>`;
+                } else if (type === 'design') {
+                    const T = parseFloat(document.getElementById('torque_d').value);
+                    const tau = parseFloat(document.getElementById('tau_d').value) * 1e6;
+                    const d = Math.pow((16*T)/(Math.PI*tau), 1/3);
+                    res = `قطر شفت: <span class="value">${(d*1000).toFixed(2)} mm</span>`;
+                }
+                const el = document.getElementById(resMap[type]);
+                el.innerHTML = `<p>${res}</p>`;
+                el.classList.add('show');
+            });
+        }
+
+        // Refrigeration AI (with Loader)
+        function refrigerationAI() {
+            runCalc('load_r', 'res_r', function() {
+                const Troom = parseFloat(document.getElementById('room_temp').value);
+                const Ttarget = parseFloat(document.getElementById('target_temp').value);
+                const Vol = parseFloat(document.getElementById('room_vol').value);
+                const Ins = document.getElementById('insulation').value;
+
+                const deltaT = Troom - Ttarget;
+                let eff, load, comp;
+                if(deltaT <= 0) {
+                    document.getElementById('res_r').innerHTML = `<p>دمای هدف بالاتر از اتاق است. نیازی به تبرید نیست.</p>`;
+                    document.getElementById('res_r').classList.add('show');
+                    document.getElementById('sol_r').classList.remove('show');
+                    return;
+                }
+                if(Ins === 'good') eff = 0.9;
+                else if(Ins === 'medium') eff = 0.7;
+                else eff = 0.5;
+                load = (Vol * deltaT * 0.3) / eff;
+                if(load < 5) comp = "کمپرسور اسکرال ۵ اسب";
+                else if(load < 20) comp = "کمپرسور پیستونی ۱۰ اسب";
+                else comp = "چیلر تراکمی هوایی";
+
+                document.getElementById('res_r').innerHTML = `
+                    <p><span class="value">بار برودتی: ${load.toFixed(1)} kW</span></p>
+                    <p>ΔT: ${deltaT}°C | حجم: ${Vol} m³</p>
+                `;
+                document.getElementById('res_r').classList.add('show');
+                document.getElementById('sol_r').innerHTML = `
+                    <div class="title">📘 راه‌حل تشریحی</div>
+                    <p>۱. بار سرمایشی حدوداً ${load.toFixed(1)} کیلووات برآورد می‌شود.</p>
+                    <p>۲. پیشنهاد می‌شود از یک <b>${comp}</b> استفاده شود.</p>
+                    <p>۳. توزیع هوا با اواپراتور فن‌دار با ظرفیت ${load.toFixed(1)} kW.</p>
+                `;
+                document.getElementById('sol_r').classList.add('show');
+            });
+        }
+
+        // Control AI (with Loader)
         function controlAI() {
-            const z = parseFloat(document.getElementById('zeta_c').value);
-            const w = parseFloat(document.getElementById('wn_c').value);
-
-            let status, tp, ts, os, formula;
-            const wd = w * Math.sqrt(1 - z*z);
-
-            if(z < 1) {
-                status = "سیستم زیر میرا (Underdamped)";
-                os = Math.exp(- (Math.PI * z) / Math.sqrt(1 - z*z));
-                tp = Math.PI / wd;
-                ts = 4 / (z * w);
-                formula = "فرمول زمان اوج: tp = π / ωd";
-            } else if(z === 1) {
-                status = "سیستم میرا بحرانی (Critically Damped)";
-                tp = "بی‌نهایت (بدون نوسان)";
-                ts = 5 / (z * w);
-                os = 0;
-                formula = "سیستم بدون فراجهش است.";
-            } else {
-                status = "سیستم فوق میرا (Overdamped)";
-                tp = "بی‌نهایت";
-                ts = 5 / (z * w);
-                os = 0;
-                formula = "سیستم بسیار کند است.";
-            }
-
-            document.getElementById('res_c').innerHTML = `
-                <p><span class="value">🔹 وضعیت سیستم: ${status}</span></p>
-                <p>ωn: ${w} rad/s | ζ: ${z} | فرکانس میرا: ${wd.toFixed(2)} rad/s</p>
-            `;
-            document.getElementById('res_c').classList.add('show');
-
-            document.getElementById('sol_c').innerHTML = `
-                <div class="title">📘 تحلیل و حل تشریحی (کنترل)</div>
-                <p>۱. سیستم دارای تابع تبدیل مرتبه دوم است. معادله مشخصه آن: s² + 2ζωn s + ωn² = 0</p>
-                <p>۲. <b>تحلیل پایداری:</b> چون ζ (${z}) و ωn (${w}) مثبت هستند، سیستم پایدار است.</p>
-                <p>۳. <b>زمان نشست (Settling Time):</b> به طور تقریبی Ts ≈ ${ts.toFixed(2)} ثانیه است.</p>
-                <p>۴. <b>تفسیر فیزیکی:</b> سیستم با میرایی ${z} در ${status} قرار دارد. </p>
-                <p>📐 فرمول استفاده شده: ${formula}</p>
-            `;
-            document.getElementById('sol_c').classList.add('show');
+            runCalc('load_c', 'res_c', function() {
+                const z = parseFloat(document.getElementById('zeta_c').value);
+                const w = parseFloat(document.getElementById('wn_c').value);
+                const wd = w * Math.sqrt(1 - z*z);
+                let status, tp, ts, os, formula;
+                if(z < 1) {
+                    status = "زیر میرا (Underdamped)";
+                    os = Math.exp(- (Math.PI * z) / Math.sqrt(1 - z*z));
+                    tp = Math.PI / wd;
+                    ts = 4 / (z * w);
+                    formula = "tp = π / ωd";
+                } else if(z === 1) {
+                    status = "میرا بحرانی";
+                    tp = "بدون نوسان";
+                    ts = 5 / (z * w);
+                    os = 0;
+                    formula = "سیستم بدون فراجهش";
+                } else {
+                    status = "فوق میرا";
+                    tp = "بی‌نهایت";
+                    ts = 5 / (z * w);
+                    os = 0;
+                    formula = "سیستم کند";
+                }
+                document.getElementById('res_c').innerHTML = `
+                    <p><span class="value">وضعیت: ${status}</span></p>
+                    <p>ωn: ${w} rad/s | ζ: ${z} | فرکانس میرا: ${wd.toFixed(2)} rad/s</p>
+                `;
+                document.getElementById('res_c').classList.add('show');
+                document.getElementById('sol_c').innerHTML = `
+                    <div class="title">📘 تحلیل کنترل</div>
+                    <p>۱. معادله مشخصه: s² + 2ζωn s + ωn² = 0</p>
+                    <p>۲. سیستم پایدار است (ζ و ωn مثبت).</p>
+                    <p>۳. زمان نشست: Ts ≈ ${ts.toFixed(2)} ثانیه.</p>
+                    <p>۴. فرمول: ${formula}</p>
+                `;
+                document.getElementById('sol_c').classList.add('show');
+            });
         }
     </script>
 </body>
