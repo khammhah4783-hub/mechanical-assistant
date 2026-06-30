@@ -3,800 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دستیار مهندسی مکانیک | Mechanical Engineering Assistant</title>
+    <title>دستیار هوشمند مهندسی مکانیک</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --accent: #3b82f6;
-            --text: #e2e8f0;
-            --border: #334155;
-            --success: #10b981;
-            --warning: #f59e0b;
+            --bg: #0f172a; --card: #1e293b; --accent: #3b82f6;
+            --text: #e2e8f0; --border: #334155; --success: #10b981;
             --radius: 12px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; padding: 20px;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header {
-            text-align: center;
-            padding: 30px 0;
-            border-bottom: 2px solid var(--accent);
-            margin-bottom: 30px;
+        .container { max-width: 800px; margin: 0 auto; }
+        header { text-align: center; padding: 20px 0; border-bottom: 2px solid var(--accent); margin-bottom: 20px; }
+        header h1 { color: var(--accent); }
+        .nav-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 5px; margin-bottom: 20px;
         }
-        header h1 {
-            font-size: 2.5em;
-            background: linear-gradient(135deg, var(--accent), #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .nav-btn {
+            background: var(--card); border: 1px solid var(--border); color: var(--text);
+            padding: 8px; border-radius: var(--radius); cursor: pointer; text-align: center; font-size: 0.8em;
+            transition: 0.2s;
         }
-        header p { color: #94a3b8; margin-top: 10px; }
-        .tab-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-        .tab-btn {
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 12px 20px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95em;
-        }
-        .tab-btn:hover, .tab-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(59,130,246,0.3);
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .nav-btn.active { background: var(--accent); border-color: var(--accent); }
         .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px; margin-bottom: 20px; display: none;
         }
-        .card h2 {
-            color: var(--accent);
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
-        .form-group { margin-bottom: 15px; }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #94a3b8;
-            font-weight: 500;
-        }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px 15px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1em;
-            transition: border 0.3s;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        .card.active { display: block; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; color: #94a3b8; font-size: 0.85em; margin-bottom: 3px; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 8px; background: var(--bg);
+            border: 1px solid var(--border); border-radius: 6px; color: var(--text);
         }
         .btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            box-shadow: 0 0 25px rgba(59,130,246,0.5);
-            transform: translateY(-2px);
+            width: 100%; background: var(--accent); color: white; border: none;
+            padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 10px;
         }
         .result-box {
-            background: var(--bg);
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
-            display: none;
+            background: #1e293b; border: 1px solid var(--success);
+            border-radius: 6px; padding: 15px; margin-top: 10px; display: none;
+            white-space: pre-wrap; text-align: left; direction: ltr;
         }
         .result-box.show { display: block; }
-        .result-box .value {
-            font-size: 1.4em;
-            color: var(--success);
-            font-weight: bold;
+        .result-box .value { color: var(--success); font-weight: bold; }
+        .solution-box {
+            background: #334155; border: 1px solid #f59e0b;
+            border-radius: 6px; padding: 15px; margin-top: 10px; display: none;
         }
-        .material-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        .material-table th, .material-table td {
-            padding: 12px 15px;
-            text-align: right;
-            border-bottom: 1px solid var(--border);
-        }
-        .material-table th {
-            background: var(--accent);
-            color: white;
-        }
-        .material-table tr:hover { background: rgba(59,130,246,0.1); }
-        .graph-img { max-width: 100%; border-radius: 8px; margin-top: 15px; }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-        }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        .loading { opacity: 0.6; pointer-events: none; }
+        .solution-box.show { display: block; }
+        .solution-box .title { color: #f59e0b; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        th, td { padding: 8px; border-bottom: 1px solid var(--border); text-align: right; }
+        th { background: var(--accent); color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>⚙️ دستیار مهندسی مکانیک</h1>
-            <p>محاسبات، جداول مواد، تبدیل واحدها و تحلیل‌های مهندسی</p>
+            <h1>⚙️ دستیار هوشمند مهندسی</h1>
+            <p style="color:#94a3b8;">AI Control, Refrigeration, Statics, Dynamics & more</p>
         </header>
 
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('statics')">📐 استاتیک و مقاومت</button>
-            <button class="tab-btn" onclick="switchTab('dynamics')">🚀 دینامیک و ارتعاشات</button>
-            <button class="tab-btn" onclick="switchTab('thermo')">🔥 ترمودینامیک</button>
-            <button class="tab-btn" onclick="switchTab('fluids')">💧 مکانیک سیالات</button>
-            <button class="tab-btn" onclick="switchTab('design')">🔩 طراحی اجزا</button>
-            <button class="tab-btn" onclick="switchTab('materials')">📋 خواص مواد</button>
-            <button class="tab-btn" onclick="switchTab('units')">🔄 تبدیل واحدها</button>
+        <div class="nav-grid">
+            <button class="nav-btn active" onclick="switchTab('statics')">استاتیک</button>
+            <button class="nav-btn" onclick="switchTab('dynamics')">دینامیک</button>
+            <button class="nav-btn" onclick="switchTab('thermo')">ترمودینامیک</button>
+            <button class="nav-btn" onclick="switchTab('fluids')">سیالات</button>
+            <button class="nav-btn" onclick="switchTab('refrigeration')">❄️ تبرید</button>
+            <button class="nav-btn" onclick="switchTab('control')">🎛️ کنترل</button>
+            <button class="nav-btn" onclick="switchTab('design')">طراحی</button>
         </div>
 
-        <!-- STATICS & STRENGTH OF MATERIALS -->
-        <div id="statics" class="tab-content active">
-            <div class="card">
-                <h2>تحلیل تیر و محاسبه تنش/کرنش</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نوع تحلیل</label>
-                        <select id="beam-type">
-                            <option value="cantilever">تیر یکسرگیردار</option>
-                            <option value="simply_supported">تیر ساده (دو تکیه‌گاه)</option>
-                            <option value="fixed_both">تیر دو سر گیردار</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>طول تیر (m)</label>
-                        <input type="number" id="beam-length" value="2.0" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>نیروی متمرکز (N)</label>
-                        <input type="number" id="beam-force" value="1000" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>موقعیت نیرو از چپ (m)</label>
-                        <input type="number" id="beam-pos" value="1.0" step="0.01">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>ممان اینرسی (m⁴) - مثال: 1e-6</label>
-                        <input type="number" id="beam-inertia" value="1e-6" step="1e-10" style="font-family:monospace">
-                    </div>
-                    <div class="form-group">
-                        <label>مدول الاستیسیته (GPa)</label>
-                        <input type="number" id="beam-modulus" value="200" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateBeam()">محاسبه</button>
-                <div id="beam-result" class="result-box"></div>
+        <!-- STATICS -->
+        <div id="statics" class="card active">
+            <h3>📐 استاتیک</h3>
+            <div class="form-row">
+                <div class="form-group"><label>نیرو (N)</label><input type="number" id="f_s" value="10000"></div>
+                <div class="form-group"><label>سطح مقطع (m²)</label><input type="number" id="a_s" value="0.01"></div>
             </div>
-
-            <div class="card">
-                <h2>محاسبه تنش و کرنش پایه</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نیروی محوری (N)</label>
-                        <input type="number" id="axial-force" value="10000" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>سطح مقطع (m²)</label>
-                        <input type="number" id="area" value="0.01" step="1e-6">
-                    </div>
-                    <div class="form-group">
-                        <label>طول اولیه (m)</label>
-                        <input type="number" id="orig-length" value="1.0" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>مدول یانگ (GPa)</label>
-                        <input type="number" id="young-modulus" value="200" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateStressStrain()">محاسبه</button>
-                <div id="stress-result" class="result-box"></div>
-            </div>
+            <button class="btn" onclick="calc('statics')">محاسبه تنش</button>
+            <div id="res_s" class="result-box"></div>
         </div>
 
-        <!-- DYNAMICS & VIBRATIONS -->
-        <div id="dynamics" class="tab-content">
-            <div class="card">
-                <h2>سیستم جرم-فنر-دمپر</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>جرم (kg)</label>
-                        <input type="number" id="mass" value="10" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>ثابت فنر (N/m)</label>
-                        <input type="number" id="spring-k" value="1000" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>ضریب دمپر (Ns/m)</label>
-                        <input type="number" id="damping" value="20" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>جابجایی اولیه (m)</label>
-                        <input type="number" id="initial-disp" value="0.1" step="0.01">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateVibration()">تحلیل ارتعاشی</button>
-                <div id="vibration-result" class="result-box"></div>
+        <!-- DYNAMICS -->
+        <div id="dynamics" class="card">
+            <h3>🚀 دینامیک</h3>
+            <div class="form-row">
+                <div class="form-group"><label>جرم (kg)</label><input type="number" id="m_d" value="10"></div>
+                <div class="form-group"><label>ثابت فنر (N/m)</label><input type="number" id="k_d" value="1000"></div>
             </div>
-
-            <div class="card">
-                <h2>محاسبات سینماتیک و دینامیک ذره</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>سرعت اولیه (m/s)</label>
-                        <input type="number" id="v0" value="20" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>شتاب (m/s²)</label>
-                        <input type="number" id="accel" value="-9.81" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>زمان (s)</label>
-                        <input type="number" id="time-dyn" value="2" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>موقعیت اولیه (m)</label>
-                        <input type="number" id="pos0" value="0" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateKinematics()">محاسبه</button>
-                <div id="kinematics-result" class="result-box"></div>
-            </div>
+            <button class="btn" onclick="calc('dynamics')">فرکانس طبیعی</button>
+            <div id="res_d" class="result-box"></div>
         </div>
 
-        <!-- THERMODYNAMICS -->
-        <div id="thermo" class="tab-content">
-            <div class="card">
-                <h2>چرخه برایتون (توربین گاز)</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نسبت فشار کمپرسور</label>
-                        <input type="number" id="pressure-ratio" value="10" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>دمای ورودی کمپرسور (K)</label>
-                        <input type="number" id="t1" value="300" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>دمای ورودی توربین (K)</label>
-                        <input type="number" id="t3" value="1400" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>نسبت گرمای ویژه (γ) - هوا = 1.4</label>
-                        <input type="number" id="gamma" value="1.4" step="0.01">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateBrayton()">محاسبه بازده چرخه</button>
-                <div id="brayton-result" class="result-box"></div>
+        <!-- THERMO -->
+        <div id="thermo" class="card">
+            <h3>🔥 ترمودینامیک</h3>
+            <div class="form-row">
+                <div class="form-group"><label>نسبت فشار</label><input type="number" id="rp_t" value="10"></div>
+                <div class="form-group"><label>گاما (γ)</label><input type="number" id="gamma_t" value="1.4"></div>
             </div>
-
-            <div class="card">
-                <h2>انتقال حرارت هدایتی (دیواره تخت)</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>ضریب هدایت (W/m·K)</label>
-                        <input type="number" id="k-thermal" value="50" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>مساحت (m²)</label>
-                        <input type="number" id="area-thermal" value="1.0" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>ضخامت (m)</label>
-                        <input type="number" id="thickness" value="0.1" step="0.001">
-                    </div>
-                    <div class="form-group">
-                        <label>ΔT (K)</label>
-                        <input type="number" id="delta-t" value="100" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateConduction()">محاسبه نرخ انتقال حرارت</button>
-                <div id="conduction-result" class="result-box"></div>
-            </div>
+            <button class="btn" onclick="calc('thermo')">بازده چرخه</button>
+            <div id="res_t" class="result-box"></div>
         </div>
 
-        <!-- FLUID MECHANICS -->
-        <div id="fluids" class="tab-content">
-            <div class="card">
-                <h2>معادله برنولی</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>فشار نقطه ۱ (Pa)</label>
-                        <input type="number" id="p1" value="101325" step="1">
-                    </div>
-                    <div class="form-group">
-                        <label>سرعت نقطه ۱ (m/s)</label>
-                        <input type="number" id="v1" value="5" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>ارتفاع نقطه ۱ (m)</label>
-                        <input type="number" id="z1" value="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>سرعت نقطه ۲ (m/s)</label>
-                        <input type="number" id="v2" value="2" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>ارتفاع نقطه ۲ (m)</label>
-                        <input type="number" id="z2" value="5" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>چگالی سیال (kg/m³)</label>
-                        <input type="number" id="rho" value="1000" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateBernoulli()">محاسبه فشار نقطه ۲</button>
-                <div id="bernoulli-result" class="result-box"></div>
+        <!-- FLUIDS -->
+        <div id="fluids" class="card">
+            <h3>💧 سیالات</h3>
+            <div class="form-row">
+                <div class="form-group"><label>P1 (Pa)</label><input type="number" id="p1_f" value="101325"></div>
+                <div class="form-group"><label>V1 (m/s)</label><input type="number" id="v1_f" value="5"></div>
             </div>
-
-            <div class="card">
-                <h2>عدد رینولدز و رژیم جریان</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>سرعت (m/s)</label>
-                        <input type="number" id="re-velocity" value="2" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>قطر لوله (m)</label>
-                        <input type="number" id="re-diameter" value="0.05" step="0.001">
-                    </div>
-                    <div class="form-group">
-                        <label>چگالی (kg/m³)</label>
-                        <input type="number" id="re-density" value="1000" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>ویسکوزیته دینامیکی (Pa·s)</label>
-                        <input type="number" id="re-viscosity" value="0.001" step="1e-6">
-                    </div>
-                </div>
-                <button class="btn" onclick="calculateReynolds()">محاسبه عدد رینولدز</button>
-                <div id="reynolds-result" class="result-box"></div>
+            <div class="form-row">
+                <div class="form-group"><label>V2 (m/s)</label><input type="number" id="v2_f" value="10"></div>
+                <div class="form-group"><label>چگالی (kg/m³)</label><input type="number" id="rho_f" value="1000"></div>
             </div>
+            <button class="btn" onclick="calc('fluids')">فشار P2</button>
+            <div id="res_f" class="result-box"></div>
         </div>
 
-        <!-- MACHINE DESIGN -->
-        <div id="design" class="tab-content">
-            <div class="card">
-                <h2>طراحی شفت تحت پیچش</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>گشتاور پیچشی (N·m)</label>
-                        <input type="number" id="torque" value="500" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>تنش برشی مجاز (MPa)</label>
-                        <input type="number" id="allowable-shear" value="50" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>ضریب اطمینان</label>
-                        <input type="number" id="safety-factor" value="2" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="designShaft()">محاسبه قطر شفت</button>
-                <div id="shaft-result" class="result-box"></div>
+        <!-- REFRIGERATION (AI Expert) -->
+        <div id="refrigeration" class="card">
+            <h3>❄️ سیستم تبرید و سردخانه (هوشمند)</h3>
+            <div class="form-row">
+                <div class="form-group"><label>دمای اتاق (C°)</label><input type="number" id="room_temp" value="25"></div>
+                <div class="form-group"><label>دمای هدف (C°)</label><input type="number" id="target_temp" value="4"></div>
             </div>
-
-            <div class="card">
-                <h2>طراحی فنر فشاری</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نیروی فنر (N)</label>
-                        <input type="number" id="spring-force" value="200" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>تغییر طول (m)</label>
-                        <input type="number" id="spring-deflection" value="0.05" step="0.001">
-                    </div>
-                    <div class="form-group">
-                        <label>مدول برشی (GPa)</label>
-                        <input type="number" id="shear-modulus" value="80" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label>قطر متوسط فنر (mm)</label>
-                        <input type="number" id="spring-diameter" value="30" step="0.1">
-                    </div>
+            <div class="form-row">
+                <div class="form-group"><label>حجم اتاق (m³)</label><input type="number" id="room_vol" value="50"></div>
+                <div class="form-group"><label>جنس دیوار (عایق)</label>
+                    <select id="insulation">
+                        <option value="good">پلی‌یورتان (عالی)</option>
+                        <option value="medium">پشم سنگ (متوسط)</option>
+                        <option value="poor">بدون عایق (ضعیف)</option>
+                    </select>
                 </div>
-                <button class="btn" onclick="designSpring()">محاسبه سیم فنر</button>
-                <div id="spring-result" class="result-box"></div>
             </div>
+            <button class="btn" onclick="refrigerationAI()">تحلیل و پیشنهاد سیستم</button>
+            <div id="res_r" class="result-box"></div>
+            <div id="sol_r" class="solution-box"></div>
         </div>
 
-        <!-- MATERIALS DATABASE -->
-        <div id="materials" class="tab-content">
-            <div class="card">
-                <h2>📋 پایگاه داده خواص مواد مهندسی</h2>
-                <div class="form-group">
-                    <label>جستجوی ماده</label>
-                    <input type="text" id="material-search" placeholder="نام ماده را تایپ کنید..." onkeyup="filterMaterials()">
-                </div>
-                <div style="overflow-x: auto;">
-                    <table class="material-table" id="material-table">
-                        <thead>
-                            <tr>
-                                <th>نام ماده</th>
-                                <th>مدول یانگ (GPa)</th>
-                                <th>چگالی (kg/m³)</th>
-                                <th>استحکام تسلیم (MPa)</th>
-                                <th>ضریب پواسون</th>
-                                <th>هدایت حرارتی (W/m·K)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="material-body"></tbody>
-                    </table>
-                </div>
+        <!-- CONTROL (AI Calculation + Explanation) -->
+        <div id="control" class="card">
+            <h3>🎛️ کنترل اتوماتیک (تحلیل پاسخ پله)</h3>
+            <div class="form-row">
+                <div class="form-group"><label>نرخ میرایی (ζ)</label><input type="number" id="zeta_c" value="0.5" step="0.1"></div>
+                <div class="form-group"><label>فرکانس طبیعی (ωn rad/s)</label><input type="number" id="wn_c" value="10"></div>
             </div>
+            <button class="btn" onclick="controlAI()">تحلیل سیستم</button>
+            <div id="res_c" class="result-box"></div>
+            <div id="sol_c" class="solution-box"></div>
         </div>
 
-        <!-- UNIT CONVERTER -->
-        <div id="units" class="tab-content">
-            <div class="card">
-                <h2>🔄 تبدیل واحدهای مهندسی</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>دسته‌بندی</label>
-                        <select id="unit-category" onchange="updateUnitOptions()">
-                            <option value="pressure">فشار</option>
-                            <option value="length">طول</option>
-                            <option value="force">نیرو</option>
-                            <option value="energy">انرژی</option>
-                            <option value="power">توان</option>
-                            <option value="temperature">دما</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>مقدار</label>
-                        <input type="number" id="unit-value" value="1" step="any">
-                    </div>
-                    <div class="form-group">
-                        <label>از واحد</label>
-                        <select id="unit-from"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>به واحد</label>
-                        <select id="unit-to"></select>
-                    </div>
-                </div>
-                <button class="btn" onclick="convertUnit()">تبدیل</button>
-                <div id="unit-result" class="result-box"></div>
+        <!-- DESIGN -->
+        <div id="design" class="card">
+            <h3>🔩 طراحی شفت</h3>
+            <div class="form-row">
+                <div class="form-group"><label>گشتاور (N.m)</label><input type="number" id="torque_d" value="500"></div>
+                <div class="form-group"><label>تنش مجاز (MPa)</label><input type="number" id="tau_d" value="50"></div>
             </div>
+            <button class="btn" onclick="calc('design')">قطر شفت</button>
+            <div id="res_design" class="result-box"></div>
         </div>
     </div>
 
     <script>
-        // Tab switching
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+        // Tab Switching
+        function switchTab(id) {
+            document.querySelectorAll('.card').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-            if (tabName === 'materials') loadMaterials();
         }
 
-        // Toast notification
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = msg;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
-        }
-
-        // ==================== STATICS ====================
-        function calculateBeam() {
-            const type = document.getElementById('beam-type').value;
-            const L = parseFloat(document.getElementById('beam-length').value);
-            const F = parseFloat(document.getElementById('beam-force').value);
-            const a = parseFloat(document.getElementById('beam-pos').value);
-            const I = parseFloat(document.getElementById('beam-inertia').value);
-            const E = parseFloat(document.getElementById('beam-modulus').value) * 1e9;
-            const b = L - a;
-            let Mmax, deflMax;
-            if (type === 'cantilever') {
-                Mmax = F * (L - a);
-                deflMax = (F * a * a * (3 * L - a)) / (6 * E * I);
-            } else if (type === 'simply_supported') {
-                Mmax = (F * a * b) / L;
-                deflMax = (F * a * b * (L + b) * Math.sqrt(3 * a * (L + b))) / (27 * E * I * L);
-            } else {
-                Mmax = (F * a * b * b) / (L * L);
-                deflMax = (F * a * a * b * b) / (3 * E * I * L * L * L);
+        // Basic Calculators (Math)
+        function calc(type) {
+            let res;
+            if (type === 'statics') {
+                const F = parseFloat(document.getElementById('f_s').value);
+                const A = parseFloat(document.getElementById('a_s').value);
+                const sigma = F / A;
+                res = `تنش نرمال: ${(sigma/1e6).toFixed(2)} MPa`;
+            } else if (type === 'dynamics') {
+                const m = parseFloat(document.getElementById('m_d').value);
+                const k = parseFloat(document.getElementById('k_d').value);
+                const w = Math.sqrt(k/m);
+                res = `فرکانس طبیعی: ${(w/(2*Math.PI)).toFixed(2)} Hz`;
+            } else if (type === 'thermo') {
+                const rp = parseFloat(document.getElementById('rp_t').value);
+                const g = parseFloat(document.getElementById('gamma_t').value);
+                const eff = 1 - Math.pow(rp, (1-g)/g);
+                res = `بازده چرخه: ${(eff*100).toFixed(2)}%`;
+            } else if (type === 'fluids') {
+                const p1 = parseFloat(document.getElementById('p1_f').value);
+                const v1 = parseFloat(document.getElementById('v1_f').value);
+                const v2 = parseFloat(document.getElementById('v2_f').value);
+                const rho = parseFloat(document.getElementById('rho_f').value);
+                const p2 = p1 + 0.5 * rho * (v1*v1 - v2*v2);
+                res = `فشار P2: ${p2.toFixed(2)} Pa`;
+            } else if (type === 'design') {
+                const T = parseFloat(document.getElementById('torque_d').value);
+                const tau = parseFloat(document.getElementById('tau_d').value) * 1e6;
+                const d = Math.pow((16*T)/(Math.PI*tau), 1/3);
+                res = `قطر شفت: ${(d*1000).toFixed(2)} mm`;
             }
-            const result = document.getElementById('beam-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>حداکثر لنگر خمشی: <span class="value">${Mmax.toFixed(2)}</span> N·m</p>
-                <p>حداکثر خیز تیر: <span class="value">${(deflMax*1000).toFixed(4)}</span> mm</p>
-                <p>تنش خمشی حداکثر (در دورترین تار): <span class="value">${((Mmax*(I**0.333)/I)).toExponential(2)}</span> Pa (تقریبی)</p>
-            `;
+            const el = document.getElementById('res_' + (type==='design'?'design':type[0]));
+            el.innerHTML = `<p><span class="value">${res}</span></p>`;
+            el.classList.add('show');
         }
 
-        function calculateStressStrain() {
-            const F = parseFloat(document.getElementById('axial-force').value);
-            const A = parseFloat(document.getElementById('area').value);
-            const L = parseFloat(document.getElementById('orig-length').value);
-            const E = parseFloat(document.getElementById('young-modulus').value) * 1e9;
-            const sigma = F / A;
-            const epsilon = sigma / E;
-            const deltaL = epsilon * L;
-            const result = document.getElementById('stress-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>تنش نرمال: <span class="value">${(sigma/1e6).toFixed(2)}</span> MPa</p>
-                <p>کرنش: <span class="value">${epsilon.toExponential(4)}</span></p>
-                <p>تغییر طول: <span class="value">${(deltaL*1000).toFixed(4)}</span> mm</p>
-            `;
-        }
+        // ================================================================
+        // AI EXPERT: REFRIGERATION
+        // ================================================================
+        function refrigerationAI() {
+            const Troom = parseFloat(document.getElementById('room_temp').value);
+            const Ttarget = parseFloat(document.getElementById('target_temp').value);
+            const Vol = parseFloat(document.getElementById('room_vol').value);
+            const Ins = document.getElementById('insulation').value;
 
-        // ==================== DYNAMICS ====================
-        function calculateVibration() {
-            const m = parseFloat(document.getElementById('mass').value);
-            const k = parseFloat(document.getElementById('spring-k').value);
-            const c = parseFloat(document.getElementById('damping').value);
-            const x0 = parseFloat(document.getElementById('initial-disp').value);
-            const wn = Math.sqrt(k / m);
-            const zeta = c / (2 * Math.sqrt(m * k));
-            const wd = wn * Math.sqrt(Math.abs(1 - zeta * zeta));
-            const result = document.getElementById('vibration-result');
-            result.className = 'result-box show';
-            let html = `<p>فرکانس طبیعی: <span class="value">${wn.toFixed(2)}</span> rad/s (${(wn/(2*Math.PI)).toFixed(2)} Hz)</p>`;
-            html += `<p>ضریب میرایی: <span class="value">${zeta.toFixed(4)}</span></p>`;
-            if (zeta < 1) {
-                html += `<p>فرکانس میرا: <span class="value">${wd.toFixed(2)}</span> rad/s</p>`;
-                html += `<p>سیستم: <span class="value">زیر میرایی (Underdamped)</span></p>`;
-            } else if (Math.abs(zeta - 1) < 1e-10) {
-                html += `<p>سیستم: <span class="value">میرایی بحرانی (Critically Damped)</span></p>`;
-            } else {
-                html += `<p>سیستم: <span class="value">بیش میرایی (Overdamped)</span></p>`;
+            const deltaT = Troom - Ttarget;
+            let eff, load, suggestion, comp;
+
+            if(deltaT <= 0) {
+                suggestion = "دمای هدف بالاتر از دمای اتاق است. نیازی به سیستم تبرید ندارید.";
+                document.getElementById('res_r').innerHTML = `<p>${suggestion}</p>`;
+                document.getElementById('res_r').classList.add('show');
+                document.getElementById('sol_r').classList.remove('show');
+                return;
             }
-            result.innerHTML = html;
-        }
 
-        function calculateKinematics() {
-            const v0 = parseFloat(document.getElementById('v0').value);
-            const a = parseFloat(document.getElementById('accel').value);
-            const t = parseFloat(document.getElementById('time-dyn').value);
-            const x0 = parseFloat(document.getElementById('pos0').value);
-            const v = v0 + a * t;
-            const x = x0 + v0 * t + 0.5 * a * t * t;
-            const result = document.getElementById('kinematics-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>سرعت نهایی: <span class="value">${v.toFixed(3)}</span> m/s</p>
-                <p>موقعیت نهایی: <span class="value">${x.toFixed(3)}</span> m</p>
-                <p>مسافت طی شده: <span class="value">${Math.abs(x - x0).toFixed(3)}</span> m</p>
+            // Load Calculation (Approx)
+            if(Ins === 'good') eff = 0.9;
+            else if(Ins === 'medium') eff = 0.7;
+            else eff = 0.5;
+            
+            load = (Vol * deltaT * 0.3) / eff; // Approx Heat Load in kW
+
+            if(load < 5) comp = "کمپرسور اسکرال ۵ اسب (سرمایش مستقیم)";
+            else if(load < 20) comp = "کمپرسور پیستونی ۱۰ اسب (سیستم DX)";
+            else comp = "چیلر تراکمی با کندانسور هوایی (۲۰ اسب به بالا)";
+
+            document.getElementById('res_r').innerHTML = `
+                <p><span class="value">🔹 بار برودتی تخمینی: ${load.toFixed(1)} kW</span></p>
+                <p>ΔT مورد نیاز: ${deltaT}°C | حجم: ${Vol} m³</p>
             `;
-        }
+            document.getElementById('res_r').classList.add('show');
 
-        // ==================== THERMODYNAMICS ====================
-        function calculateBrayton() {
-            const rp = parseFloat(document.getElementById('pressure-ratio').value);
-            const T1 = parseFloat(document.getElementById('t1').value);
-            const T3 = parseFloat(document.getElementById('t3').value);
-            const g = parseFloat(document.getElementById('gamma').value);
-            const eta = 1 - Math.pow(rp, (1 - g) / g);
-            const result = document.getElementById('brayton-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>بازده ایده‌آل چرخه برایتون: <span class="value">${(eta*100).toFixed(2)}%</span></p>
-                <p>دمای خروجی کمپرسور (ایزنتروپیک): <span class="value">${(T1 * Math.pow(rp, (g-1)/g)).toFixed(1)}</span> K</p>
-                <p>دمای خروجی توربین (ایزنتروپیک): <span class="value">${(T3 * Math.pow(1/rp, (g-1)/g)).toFixed(1)}</span> K</p>
+            document.getElementById('sol_r').innerHTML = `
+                <div class="title">📘 راه‌حل پیشنهادی سیستم (تشریحی)</div>
+                <p>۱. با توجه به اختلاف دمای ${deltaT} درجه و حجم ${Vol} متر مکعب، بار سرمایشی حدوداً ${load.toFixed(1)} کیلووات برآورد می‌شود.</p>
+                <p>۲. برای تأمین این بار برودتی، پیشنهاد می‌شود از یک <b>${comp}</b> استفاده شود.</p>
+                <p>۳. جهت توزیع هوا در سردخانه، استفاده از اواپراتور فن‌دار (Evaporator Unit) با ظرفیت حداقل ${load.toFixed(1)} کیلووات الزامی است.</p>
+                <p>۴. خط لوله مبرد باید با عایق الاستومری (Armaflex) جهت جلوگیری از تعریق پوشیده شود.</p>
             `;
+            document.getElementById('sol_r').classList.add('show');
         }
 
-        function calculateConduction() {
-            const k = parseFloat(document.getElementById('k-thermal').value);
-            const A = parseFloat(document.getElementById('area-thermal').value);
-            const dx = parseFloat(document.getElementById('thickness').value);
-            const dT = parseFloat(document.getElementById('delta-t').value);
-            const q = k * A * dT / dx;
-            const result = document.getElementById('conduction-result');
-            result.className = 'result-box show';
-            result.innerHTML = `<p>نرخ انتقال حرارت: <span class="value">${q.toFixed(2)}</span> W</p>`;
-        }
+        // ================================================================
+        // AI EXPERT: CONTROL THEORY
+        // ================================================================
+        function controlAI() {
+            const z = parseFloat(document.getElementById('zeta_c').value);
+            const w = parseFloat(document.getElementById('wn_c').value);
 
-        // ==================== FLUIDS ====================
-        function calculateBernoulli() {
-            const p1 = parseFloat(document.getElementById('p1').value);
-            const v1 = parseFloat(document.getElementById('v1').value);
-            const z1 = parseFloat(document.getElementById('z1').value);
-            const v2 = parseFloat(document.getElementById('v2').value);
-            const z2 = parseFloat(document.getElementById('z2').value);
-            const rho = parseFloat(document.getElementById('rho').value);
-            const g = 9.81;
-            const p2 = p1 + 0.5 * rho * (v1*v1 - v2*v2) + rho * g * (z1 - z2);
-            const result = document.getElementById('bernoulli-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>فشار در نقطه ۲: <span class="value">${p2.toFixed(2)}</span> Pa (${(p2/101325).toFixed(4)} atm)</p>
-            `;
-        }
+            let status, tp, ts, os, formula;
+            const wd = w * Math.sqrt(1 - z*z);
 
-        function calculateReynolds() {
-            const vel = parseFloat(document.getElementById('re-velocity').value);
-            const D = parseFloat(document.getElementById('re-diameter').value);
-            const rho = parseFloat(document.getElementById('re-density').value);
-            const mu = parseFloat(document.getElementById('re-viscosity').value);
-            const Re = rho * vel * D / mu;
-            let regime = '';
-            if (Re < 2300) regime = 'جریان لایه‌ای (Laminar)';
-            else if (Re < 4000) regime = 'ناحیه گذار (Transitional)';
-            else regime = 'جریان آشفته (Turbulent)';
-            const result = document.getElementById('reynolds-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>عدد رینولدز: <span class="value">${Re.toFixed(0)}</span></p>
-                <p>رژیم جریان: <span class="value">${regime}</span></p>
-            `;
-        }
-
-        // ==================== DESIGN ====================
-        function designShaft() {
-            const T = parseFloat(document.getElementById('torque').value);
-            const tau = parseFloat(document.getElementById('allowable-shear').value) * 1e6;
-            const sf = parseFloat(document.getElementById('safety-factor').value);
-            const d = Math.pow((16 * T * sf) / (Math.PI * tau), 1/3);
-            const result = document.getElementById('shaft-result');
-            result.className = 'result-box show';
-            result.innerHTML = `<p>قطر شفت: <span class="value">${(d*1000).toFixed(2)}</span> mm</p>`;
-        }
-
-        function designSpring() {
-            const F = parseFloat(document.getElementById('spring-force').value);
-            const defl = parseFloat(document.getElementById('spring-deflection').value);
-            const G = parseFloat(document.getElementById('shear-modulus').value) * 1e9;
-            const D = parseFloat(document.getElementById('spring-diameter').value) / 1000;
-            const k = F / defl;
-            const d = Math.pow((8 * k * D*D*D) / G, 0.25);
-            const result = document.getElementById('spring-result');
-            result.className = 'result-box show';
-            result.innerHTML = `
-                <p>ثابت فنر: <span class="value">${k.toFixed(2)}</span> N/m</p>
-                <p>قطر سیم فنر: <span class="value">${(d*1000).toFixed(2)}</span> mm</p>
-            `;
-        }
-
-        // ==================== MATERIALS ====================
-        const materials = [
-            {name:"فولاد کربنی AISI 1020", E:210, density:7850, yield_strength:350, poisson:0.29, k:52},
-            {name:"فولاد ضدزنگ 304", E:193, density:8000, yield_strength:215, poisson:0.29, k:16},
-            {name:"آلومینیوم 6061-T6", E:69, density:2700, yield_strength:275, poisson:0.33, k:167},
-            {name:"تیتانیوم Ti-6Al-4V", E:114, density:4430, yield_strength:880, poisson:0.34, k:7},
-            {name:"برنج (Brass)", E:105, density:8500, yield_strength:200, poisson:0.34, k:120},
-            {name:"مس خالص", E:117, density:8960, yield_strength:70, poisson:0.34, k:401},
-            {name:"چدن خاکستری", E:100, density:7150, yield_strength:150, poisson:0.26, k:50},
-            {name:"نیکل", E:207, density:8900, yield_strength:150, poisson:0.31, k:91},
-            {name:"تنگستن", E:411, density:19300, yield_strength:750, poisson:0.28, k:173},
-            {name:"شیشه", E:70, density:2500, yield_strength:50, poisson:0.22, k:1},
-            {name:"بتن", E:30, density:2400, yield_strength:5, poisson:0.18, k:1.5},
-            {name:"چوب بلوط", E:12, density:750, yield_strength:60, poisson:0.30, k:0.17},
-        ];
-
-        function loadMaterials(filter = '') {
-            const tbody = document.getElementById('material-body');
-            tbody.innerHTML = '';
-            materials.filter(m => m.name.toLowerCase().includes(filter.toLowerCase())).forEach(m => {
-                tbody.innerHTML += `<tr>
-                    <td><strong>${m.name}</strong></td>
-                    <td>${m.E}</td><td>${m.density}</td><td>${m.yield_strength}</td>
-                    <td>${m.poisson}</td><td>${m.k}</td></tr>`;
-            });
-        }
-
-        function filterMaterials() {
-            loadMaterials(document.getElementById('material-search').value);
-        }
-
-        // ==================== UNIT CONVERTER ====================
-        const unitData = {
-            pressure: ['Pa', 'kPa', 'MPa', 'GPa', 'bar', 'atm', 'psi', 'mmHg', 'torr'],
-            length: ['m', 'cm', 'mm', 'km', 'inch', 'ft', 'yard', 'mile', 'μm'],
-            force: ['N', 'kN', 'MN', 'lbf', 'kgf', 'dyne'],
-            energy: ['J', 'kJ', 'MJ', 'cal', 'kcal', 'BTU', 'eV', 'Wh', 'kWh'],
-            power: ['W', 'kW', 'MW', 'hp', 'BTU/h', 'ft·lbf/s'],
-            temperature: ['K', '°C', '°F', '°R']
-        };
-
-        const conversionToSI = {
-            Pa:1, kPa:1e3, MPa:1e6, GPa:1e9, bar:1e5, atm:101325, psi:6894.76, mmHg:133.322, torr:133.322,
-            m:1, cm:0.01, mm:0.001, km:1000, inch:0.0254, ft:0.3048, yard:0.9144, mile:1609.34, 'μm':1e-6,
-            N:1, kN:1000, MN:1e6, lbf:4.44822, kgf:9.80665, dyne:1e-5,
-            J:1, kJ:1000, MJ:1e6, cal:4.184, kcal:4184, BTU:1055.06, eV:1.602e-19, Wh:3600, kWh:3.6e6,
-            W:1, kW:1000, MW:1e6, hp:745.7, 'BTU/h':0.293071, 'ft·lbf/s':1.35582
-        };
-
-        function updateUnitOptions() {
-            const cat = document.getElementById('unit-category').value;
-            const units = unitData[cat];
-            const from = document.getElementById('unit-from');
-            const to = document.getElementById('unit-to');
-            from.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
-            to.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
-            if (cat === 'temperature') {
-                document.getElementById('unit-value').step = '0.01';
+            if(z < 1) {
+                status = "سیستم زیر میرا (Underdamped)";
+                os = Math.exp(- (Math.PI * z) / Math.sqrt(1 - z*z));
+                tp = Math.PI / wd;
+                ts = 4 / (z * w);
+                formula = "فرمول زمان اوج: tp = π / ωd";
+            } else if(z === 1) {
+                status = "سیستم میرا بحرانی (Critically Damped)";
+                tp = "بی‌نهایت (بدون نوسان)";
+                ts = 5 / (z * w);
+                os = 0;
+                formula = "سیستم بدون فراجهش است.";
             } else {
-                document.getElementById('unit-value').step = 'any';
+                status = "سیستم فوق میرا (Overdamped)";
+                tp = "بی‌نهایت";
+                ts = 5 / (z * w);
+                os = 0;
+                formula = "سیستم بسیار کند است.";
             }
-        }
 
-        function convertUnit() {
-            const cat = document.getElementById('unit-category').value;
-            const val = parseFloat(document.getElementById('unit-value').value);
-            const from = document.getElementById('unit-from').value;
-            const to = document.getElementById('unit-to').value;
-            let result;
-            if (cat === 'temperature') {
-                let kelvin;
-                if (from === 'K') kelvin = val;
-                else if (from === '°C') kelvin = val + 273.15;
-                else if (from === '°F') kelvin = (val + 459.67) * 5/9;
-                else kelvin = val * 5/9;
-                if (to === 'K') result = kelvin;
-                else if (to === '°C') result = kelvin - 273.15;
-                else if (to === '°F') result = kelvin * 9/5 - 459.67;
-                else result = kelvin * 9/5;
-            } else {
-                result = val * conversionToSI[from] / conversionToSI[to];
-            }
-            const resDiv = document.getElementById('unit-result');
-            resDiv.className = 'result-box show';
-            resDiv.innerHTML = `<p>${val} ${from} = <span class="value">${result.toPrecision(8)}</span> ${to}</p>`
-        }
+            document.getElementById('res_c').innerHTML = `
+                <p><span class="value">🔹 وضعیت سیستم: ${status}</span></p>
+                <p>ωn: ${w} rad/s | ζ: ${z} | فرکانس میرا: ${wd.toFixed(2)} rad/s</p>
+            `;
+            document.getElementById('res_c').classList.add('show');
 
-        // Initialize
-        updateUnitOptions();
-        loadMaterials();
+            document.getElementById('sol_c').innerHTML = `
+                <div class="title">📘 تحلیل و حل تشریحی (کنترل)</div>
+                <p>۱. سیستم دارای تابع تبدیل مرتبه دوم است. معادله مشخصه آن: s² + 2ζωn s + ωn² = 0</p>
+                <p>۲. <b>تحلیل پایداری:</b> چون ζ (${z}) و ωn (${w}) مثبت هستند، سیستم پایدار است.</p>
+                <p>۳. <b>زمان نشست (Settling Time):</b> به طور تقریبی Ts ≈ ${ts.toFixed(2)} ثانیه است.</p>
+                <p>۴. <b>تفسیر فیزیکی:</b> سیستم با میرایی ${z} در ${status} قرار دارد. </p>
+                <p>📐 فرمول استفاده شده: ${formula}</p>
+            `;
+            document.getElementById('sol_c').classList.add('show');
+        }
     </script>
 </body>
-                  </html>
+</html>
